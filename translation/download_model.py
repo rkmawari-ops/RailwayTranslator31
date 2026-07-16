@@ -1,26 +1,23 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from pathlib import Path
 
-MODELS = {
-    "en_indic": "Raghavan/indictrans2-en-indic-dist-200M",
-    "indic_en": "Raghavan/indictrans2-indic-en-dist-200M",
-}
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-for folder, repo in MODELS.items():
-    print(f"\nDownloading {repo}...")
+MODEL_NAME = "ai4bharat/indictrans2-en-indic-1B"
 
-    tokenizer = AutoTokenizer.from_pretrained(
-        repo,
-        trust_remote_code=True,
-    )
+MODEL_DIR = Path("models/translation/indictrans2")
 
-    model = AutoModelForSeq2SeqLM.from_pretrained(
-        repo,
-        trust_remote_code=True,
-    )
+MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
-    tokenizer.save_pretrained(f"models/translation/{folder}")
-    model.save_pretrained(f"models/translation/{folder}")
+print("Downloading tokenizer...")
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
-    print(f"{folder} downloaded successfully.")
+print("Downloading model...")
+model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 
-print("\nAll translation models downloaded.")
+print("Saving locally...")
+
+tokenizer.save_pretrained(MODEL_DIR)
+model.save_pretrained(MODEL_DIR)
+
+print("\nModel downloaded successfully!")
+print(f"Saved to: {MODEL_DIR}")

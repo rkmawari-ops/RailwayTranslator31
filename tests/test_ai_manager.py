@@ -1,16 +1,22 @@
-print("Test file started")
-
 from ai.manager import AIManager
-
-print("Import successful")
 
 
 def main():
-    print("Inside main()")
 
     manager = AIManager()
 
-    print("Everything Loaded Successfully")
+    print()
+
+    print("Loaded Models")
+
+    for model in manager.registry.list_models():
+        print(" -", model)
+
+    print()
+
+    whisper = manager.get_model("whisper")
+
+    print(type(whisper))
 
 
 if __name__ == "__main__":
